@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Birthday Envelope</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        font-family: "Cherry Bomb One", cursive;
+        background: url("/img/cat.jpg") no-repeat center center/cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .balloon {
+        position: absolute;
+        width: 60px;
+        height: 80px;
+        background: radial-gradient(circle at 30% 30%, #ffb6c1, #ff69b4);
+        border-radius: 50% 50% 45% 45%;
+        animation: float 6s ease-in-out infinite;
+      }
+      .balloon::after {
+        content: "";
+        position: absolute;
+        top: 80px;
+        left: 50%;
+        width: 2px;
+        height: 50px;
+        background: #fff;
+        transform: translateX(-50%);
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(100vh);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-150px);
+          opacity: 0;
+        }
+      }
+
+      .wrapper {
+        position: relative;
+        height: 220px;
+        width: 320px;
+        background: linear-gradient(145deg, #8be7ba, #65d49d);
+        border-radius: 15px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        overflow: visible;
+      }
+
+      .lid.one {
+        position: absolute;
+        width: 100%;
+        height: 80%;
+        top: 0;
+        left: 0;
+        border-radius: 15px 15px 0 0;
+        background: linear-gradient(135deg, #a3f0c1, #6ed499);
+        box-shadow: inset 0 -6px 8px rgba(255, 255, 255, 0.4);
+        transform-origin: top;
+        transition: transform 0.4s ease;
+        z-index: 3;
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+      }
+
+      .lid.two {
+        position: absolute;
+        width: 100%;
+        height: 80%;
+        top: 0;
+        left: 0;
+        border-radius: 15px 15px 0 0;
+        background: linear-gradient(135deg, #68c88f, #4ab26b);
+        box-shadow: inset 0 -4px 6px rgba(0, 0, 0, 0.15);
+        transform-origin: top;
+        transition: transform 0.4s ease 0.1s;
+        z-index: 1;
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+      }
+
+      .envelope {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: calc(100% - 20px);
+        height: 200px;
+        background: linear-gradient(145deg, #d8f5e4, #b2e7c7);
+        border-radius: 0 0 15px 15px;
+        box-shadow: inset 0 4px 6px rgba(255, 255, 255, 0.6),
+          0 6px 12px rgba(0, 0, 0, 0.1);
+        border: 1px solid #a4d5b3;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+
+      .wrapper.opened .lid.one {
+        transform: rotateX(90deg);
+      }
+
+      .snoopy-peek {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        width: 60px;
+        transform: translateX(-50%) scale(0);
+        transform-origin: bottom center;
+        z-index: 4;
+        transition: transform 0.3s ease;
+      }
+
+      .wrapper:hover .lid.one {
+        transform: rotateX(30deg);
+      }
+
+      .wrapper:hover .snoopy-peek {
+        transform: translateX(-50%) scale(1) rotate(-10deg);
+        animation: wiggle 0.6s ease-in-out infinite;
+      }
+
+      @keyframes wiggle {
+        0%,
+        100% {
+          transform: translateX(-50%) scale(1) rotate(-10deg);
+        }
+        50% {
+          transform: translateX(-50%) scale(1) rotate(10deg);
+        }
+      }
+
+      .click-text {
+        position: absolute;
+        top: 75px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #ff69b4;
+        font-size: 18px;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        background: #fff0f6;
+        padding: 6px 14px;
+        border-radius: 20px;
+        box-shadow: 0 3px 6px rgba(255, 105, 180, 0.4);
+        text-shadow: 0 1px 1px #fff;
+        cursor: pointer;
+        user-select: none;
+        animation: bounce 1.5s infinite;
+        z-index: 4;
+        letter-spacing: 0.05em;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+        }
+        50% {
+          transform: translateX(-50%) translateY(-6px);
+        }
+      }
+
+      .letter {
+        position: absolute;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%) translateY(0);
+        width: 80%;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        z-index: 2;
+        transition: all 0.5s ease;
+        font-family: "Segoe UI", sans-serif;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .letter::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: repeating-linear-gradient(
+          -45deg,
+          #ffcccc,
+          #ffcccc 5px,
+          #ffffff 5px,
+          #ffffff 10px
+        );
+        border-radius: 10px 10px 0 0;
+      }
+
+      .wrapper.opened .lid.one {
+        transform: rotateX(90deg);
+      }
+
+      .wrapper.opened .letter {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-80px);
+        z-index: 5;
+      }
+
+      .confetti {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        animation: confetti-fall 1s linear forwards;
+        z-index: 6;
+      }
+
+      @keyframes confetti-fall {
+        0% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(100px) scale(0.5);
+        }
+      }
+
+      @keyframes bounceUp {
+        0% {
+          transform: translateX(-50%) translateY(0) scale(0.9);
+          opacity: 0;
+        }
+        50% {
+          transform: translateX(-50%) translateY(-100px) scale(1.05);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(-50%) translateY(-80px) scale(1);
+        }
+      }
+
+      .train-container {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        pointer-events: none; /* so it won't block clicks */
+        z-index: 1000;
+      }
+
+      .train-left,
+      .train-right {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        height: 130vh; /* Use full viewport height */
+        overflow: hidden;
+        align-items: center;
+        width: 200px;
+        position: relative;
+      }
+
+
+
+      /* Animation keyframes for vertical infinite scroll */
+      @keyframes slideUp {
+        0% {
+          transform: translateY(100%);
+        }
+        100% {
+          transform: translateY(-100%);
+        }
+      }
+
+      /* Apply animation to container of images */
+      .train-left {
+        animation: slideUp 10s linear infinite;
+      }
+
+      .train-right {
+        animation: slideUp 12s linear infinite;
+        animation-direction: reverse; /* move opposite way */
+      }
+
+      .train-left img,
+      .train-right img {
+        width: 160px;
+        height: 200px;
+        min-height: 200px;
+        max-height: 200px;
+        border-radius: 20px;
+        object-fit: cover;
+        box-shadow: 0 4px 12px rgba(255, 182, 193, 0.6);
+        border: 3px dashed #fff0f5;
+        transform: rotate(-2deg);
+        transition: transform 0.3s ease;
+      }
+      .train-right img {
+        transform: rotate(2deg);
+      }
+      .train-left img:hover,
+      .train-right img:hover {
+        transform: scale(1.05) rotate(0deg);
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <!-- Balloons -->
+    <div class="balloon" style="left: 10%; animation-delay: 0s"></div>
+    <div class="balloon" style="left: 40%; animation-delay: 1s"></div>
+    <div class="balloon" style="left: 70%; animation-delay: 2s"></div>
+
+    <div class="wrapper" id="envelope">
+      <img src="/img/snoppy.png" alt="Snoopy peeking" class="snoopy-peek" />
+      <div class="click-text">Click me!</div>
+      <div class="lid one"></div>
+      <div class="lid two"></div>
+      <div class="envelope"></div>
+      <div class="letter">
+        <h3>Dear Rex,</h3>
+        <p>
+          May your day be filled with joy, smiles, cake, and cute surprises!
+          🐾🎂<br /><br />
+          You're loved more than you know. Stay awesome, stay kind, and keep
+          chasing dreams!<br /><br />
+          With hugs and confetti,<br />🐶 Lemon
+        </p>
+      </div>
+    </div>
+
+    <audio id="hoverSound" src="/sound/open.mp3" preload="auto"></audio>
+
+    <div class="train-container">
+      <div class="train-left">
+        <img src="img/1.jpg" alt="Pic 1" />
+        <img src="img/2.jpg" alt="Pic 2" />
+        <img src="img/3.jpg" alt="Pic 3" />
+        <img src="img/4.jpg" alt="Pic 4" />
+      </div>
+      <div class="train-right">
+        <img src="img/1.jpg" alt="Pic 5" />
+        <img src="img/2.jpg" alt="Pic 6" />
+        <img src="img/3.jpg" alt="Pic 7" />
+        <img src="img/4.jpg" alt="Pic 8" />
+      </div>
+    </div>
+
+    <script>
+      // Add extra floating balloons
+      for (let i = 0; i < 3; i++) {
+        const b = document.createElement("div");
+        b.className = "balloon";
+        b.style.left = Math.random() * 100 + "%";
+        b.style.animationDelay = Math.random() * 4 + "s";
+        document.body.appendChild(b);
+      }
+
+      const wrapper = document.getElementById("envelope");
+      const hoverSound = document.getElementById("hoverSound");
+      const clickText = document.querySelector(".click-text");
+
+      // Play sound on hover
+      wrapper.addEventListener("mouseenter", () => {
+        hoverSound.currentTime = 0;
+        hoverSound.play();
+      });
+
+      // Envelope opening on click
+      wrapper.addEventListener("click", () => {
+        if (!wrapper.classList.contains("opened")) {
+          // OPEN envelope
+          wrapper.classList.add("opened");
+
+          // Bounce animation
+          const letter = wrapper.querySelector(".letter");
+          letter.style.animation = "bounceUp 0.6s ease-out";
+
+          // Confetti
+          for (let i = 0; i < 25; i++) {
+            const confetti = document.createElement("div");
+            confetti.className = "confetti";
+            confetti.style.left = 150 + Math.random() * 100 - 50 + "px";
+            confetti.style.top = 80 + Math.random() * 20 - 10 + "px";
+            confetti.style.background = `hsl(${
+              Math.random() * 360
+            }, 100%, 75%)`;
+            confetti.style.animationDuration = 0.8 + Math.random() * 0.6 + "s";
+            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+            wrapper.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 1500);
+          }
+        } else {
+          // CLOSE envelope
+          wrapper.classList.remove("opened");
+
+          // Reset the animation so it's clean on next open
+          const letter = wrapper.querySelector(".letter");
+          letter.style.animation = "none";
+          void letter.offsetWidth; // forces reflow
+          letter.style.animation = "";
+        }
+      });
+    </script>
+  </body>
+</html>
